@@ -41,7 +41,6 @@ fi
 
 echo "Entrando no repositório e iniciando configuração do container..."
 sleep 1
-cd scripts || exit
 if [ ! -f "Dockerfile" ]; then
 	echo "Dockerfile não encontrado."
 	exit 1
