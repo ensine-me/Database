@@ -1,112 +1,99 @@
-drop database ensineme;
-create database ensineme;
-use ensineme;
+-- Drop e create database
+DROP DATABASE IF EXISTS ensineme;
+CREATE DATABASE ensineme;
+\c ensineme;
 
-create table usuario (
-	id_usuario int primary key auto_increment,
-    nome varchar(80),
-    email varchar(255),
-    senha varchar(45),
-    data_nasc date,
-    is_professor boolean,
-    qtd_experiencia int,
-    fotoPerfil varchar(255)
+-- Criação de tabelas
+CREATE TABLE usuario (
+    id_usuario SERIAL PRIMARY KEY,
+    nome VARCHAR(80),
+    email VARCHAR(255),
+    senha VARCHAR(45),
+    data_nasc DATE,
+    is_professor BOOLEAN,
+    qtd_experiencia INTEGER,
+    foto_perfil VARCHAR(255)
 );
 
-create table log_experiencia(
-	quantidade int,
-    data_adquirida datetime,
-    fk_usuario int,
-    foreign key (fk_usuario) references usuario (id_usuario)
+CREATE TABLE log_experiencia(
+    quantidade INTEGER,
+    data_adquirida TIMESTAMP,
+    fk_usuario INTEGER REFERENCES usuario (id_usuario)
 );
 
-create table chat(
-	id_chat int primary key auto_increment
+CREATE TABLE chat(
+    id_chat SERIAL PRIMARY KEY
 );
 
-create table chat_participante(
-	fk_usuario int,
-    fk_chat int,
-    primary key (fk_usuario, fk_chat),
-    foreign key (fk_usuario) references usuario (id_usuario),
-    foreign key (fk_chat) references chat (id_chat)
+CREATE TABLE chat_participante(
+    fk_usuario INTEGER REFERENCES usuario (id_usuario),
+    fk_chat INTEGER REFERENCES chat (id_chat),
+    PRIMARY KEY (fk_usuario, fk_chat)
 );
 
-create table disciplina(
-	id_disciplina int primary key auto_increment,
-    nome varchar(45)
+CREATE TABLE disciplina(
+    id_disciplina SERIAL PRIMARY KEY,
+    nome VARCHAR(45)
 );
 
-create table disciplina_usuario(
-	fk_disciplina int,
-    fk_usuario int,
-    foreign key (fk_usuario) references usuario (id_usuario),
-    foreign key (fk_disciplina) references disciplina (id_disciplina)
+CREATE TABLE disciplina_usuario(
+    fk_disciplina INTEGER REFERENCES disciplina (id_disciplina),
+    fk_usuario INTEGER REFERENCES usuario (id_usuario)
 );
 
-create table professor(
-	id_professor int primary key auto_increment,
-    fk_usuario int,
-    descricao varchar(2550),
-    preco_hora_aula decimal(5,2),
-    foreign key (fk_usuario) references usuario (id_usuario)
+CREATE TABLE professor(
+    id_professor SERIAL PRIMARY KEY,
+    fk_usuario INTEGER REFERENCES usuario (id_usuario),
+    descricao VARCHAR(2550),
+    preco_hora_aula DECIMAL(5, 2)
 );
 
-create table disponibilidade_professor(
-	fk_professor int,
-    dia_semana varchar(10),
-    horario_inicio datetime,
-    horario_fim datetime,
-    foreign key (fk_professor) references professor (id_professor)
+CREATE TABLE disponibilidade_professor(
+    fk_professor INTEGER REFERENCES professor (id_professor),
+    dia_semana VARCHAR(10),
+    horario_inicio TIME,
+    horario_fim TIME
 );
 
-create table formacao(
-	id_formacao int primary key auto_increment,
-    data_inicio date,
-    data_termino date,
-    instituicao varchar(100),
-    nome_curso varchar(30),
-    tipo_formacao varchar(20),
-    fk_professor int,
-    foreign key (fk_professor) references professor (id_professor)
+CREATE TABLE formacao(
+    id_formacao SERIAL PRIMARY KEY,
+    data_inicio DATE,
+    data_termino DATE,
+    instituicao VARCHAR(100),
+    nome_curso VARCHAR(30),
+    tipo_formacao VARCHAR(20),
+    fk_professor INTEGER REFERENCES professor (id_professor)
 );
 
-create table horario_disponivel(
-	id_horario_disponivel int primary key auto_increment,
-    fk_professor int,
-    data_hora_inicial datetime,
-    data_hora_final datetime,
-    foreign key (fk_professor) references professor (id_professor)
+CREATE TABLE horario_disponivel(
+    id_horario_disponivel SERIAL PRIMARY KEY,
+    fk_professor INTEGER REFERENCES professor (id_professor),
+    data_hora_inicial TIMESTAMP,
+    data_hora_final TIMESTAMP
 );
 
-create table aula(
-	id_aula int primary key auto_increment,
-    fk_professor int,
-    fk_disciplina int,
-    titulo varchar(255),
-    data_hora datetime,
-    descricao varchar(255),
-    limite_participantes int,
-    duracao_segundos int,
-    status_aula varchar(35),
-    preco decimal(5,2),
-    foreign key (fk_professor) references professor (id_professor),
-    foreign key (fk_disciplina) references disciplina (id_disciplina)
+CREATE TABLE aula(
+    id_aula SERIAL PRIMARY KEY,
+    fk_professor INTEGER REFERENCES professor (id_professor),
+    fk_disciplina INTEGER REFERENCES disciplina (id_disciplina),
+    titulo VARCHAR(255),
+    data_hora TIMESTAMP,
+    descricao VARCHAR(255),
+    limite_participantes INTEGER,
+    duracao_segundos INTEGER,
+    status_aula VARCHAR(35),
+    preco DECIMAL(5, 2)
 );
 
-create table aluno_aula(
-	fk_usuario int,
-    fk_aula int,
-    primary key (fk_usuario, fk_aula),
-    foreign key (fk_usuario) references usuario (id_usuario),
-    foreign key (fk_aula) references aula (id_aula)
+CREATE TABLE aluno_aula(
+    fk_usuario INTEGER REFERENCES usuario (id_usuario),
+    fk_aula INTEGER REFERENCES aula (id_aula),
+    PRIMARY KEY (fk_usuario, fk_aula)
 );
 
-create table mensagem(
-	id_mensagem int primary key auto_increment,
-    fk_remetente int,
-    fk_chat int,
-    conteudo varchar(300),
-    foreign key (fk_remetente) references usuario (id_usuario),
-    foreign key (fk_chat) references chat (id_chat)
+CREATE TABLE mensagem(
+    id_mensagem SERIAL PRIMARY KEY,
+    fk_remetente INTEGER REFERENCES usuario (id_usuario),
+    fk_chat INTEGER REFERENCES chat (id_chat),
+    conteudo VARCHAR(300)
 );
