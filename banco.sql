@@ -97,3 +97,5 @@ CREATE TABLE mensagem(
     fk_chat INTEGER REFERENCES chat (id_chat),
     conteudo VARCHAR(300)
 );
+
+ALTER TABLE aula DROP COLUMN id;
