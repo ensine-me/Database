@@ -1,10 +1,10 @@
-FROM mysql:latest
+FROM postgres:latest
 
-ENV MYSQL_ROOT_PASSWORD=Ensine_1234
-ENV MYSQL_DATABASE=ensineme
-ENV MYSQL_USER=ensine_admin
-ENV MYSQL_PASSWORD=Ensine_1234
+ENV POSTGRES_ROOT_PASSWORD=Ensine_1234
+ENV POSTGRES_DATABASE=ensineme
+ENV POSTGRES_USER=ensine_admin
+ENV POSTGRES_PASSWORD=Ensine_1234
 
-COPY ../banco.sql /docker-entrypoint-initdb.d/
+COPY banco.sql /docker-entrypoint-initdb.d/
 
-EXPOSE 3306
+EXPOSE 5432

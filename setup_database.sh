@@ -29,7 +29,7 @@ fi
 #read -p "Username github: " username
 #read -s -p "Token github: " token
 #
-#if [ ! -d "Database" ]; then
+ #if [ ! -d "Database" ]; then
 #	git clone https://$username:$token@github.com/ensine-me/Database.git
 #else
 #	echo "Repositório já clonado."
@@ -52,7 +52,7 @@ sudo docker build -t ensine-database-image .
 echo ""
 echo "Iniciando container docker..."
 sleep 1
-sudo docker run --name ensine-database-container -p 3306:3306 -d ensine-database-image
+sudo docker run --name ensine-database-container -p 5432:5432 -d ensine-database-image
 
 echo "Containers ativos:"
 sudo docker ps -a
